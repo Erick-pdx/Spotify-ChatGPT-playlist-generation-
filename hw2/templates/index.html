@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Music Tracker</h2>
+    <h3>Add Music <a href="{{ url_for('sign') }}">here</a></h3>
+    <h3>Go to main menu <a href="{{ url_for('front') }}">here</a></h3>
+    <h3>Entries</h3>
+    {% for entry in entries %}
+    <p class="entry">
+        Song name: {{ entry.name or 'Unknown' }}
+        <br> Performed by: {{ entry.performed or 'N/A' }}
+        <br> Written by: {{ entry.written or 'Unknown' }}
+        <br>Genre(s): {{ entry.genre or 'N/A' }}
+        <br> Published on: {{ entry.dates or 'Unknown Date' }}
+        <br> <a href="{{ entry.url or '#' }}">{{ entry.url or 'No URL' }}</a>
+        <br> {{ entry.lyrics or 'No Lyrics Provided' }}
+    </p>
+{% endfor %}
+
+{% endblock %}
