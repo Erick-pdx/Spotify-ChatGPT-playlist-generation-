@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Track Music</h2>
+    <h3>View Music <a href="{{ url_for('index') }}">here</a></h3>
+    <h3>Go to main menu <a href="{{ url_for('front') }}">here</a></h3>
+    <form action="{{ url_for('sign') }}" method=post>
+	<p class="heading">Name: <input type=text name=name></p>
+    <p class="heading">Genre: <input type=text name=genre></p>
+	<p class="heading">Performed by: <input type=text name=performed></p>
+    <p class="heading">Written by: <input type=text name=written></p>
+	<p class="heading">date created: <input type=date name=dates></p>
+    <p class="heading">Url: <input type=text name=url></p>
+        <p class="heading">lyrics:
+	<textarea rows=5 cols=50 name=lyrics></textarea></p>
+	<p><input type=submit value=Sign></p>
+    </form>
+{% endblock %}
