@@ -18,7 +18,7 @@ def from_datastore(entity):
         return None
     if isinstance(entity, list):
         entity = entity.pop()
-    return [entity['name'],entity['email'],entity['date'],entity['message']]
+    return [entity['name'],entity['genre'],entity['performed'],entity['written'], entity['date'], entity['lyrics'], entity['url']]
 
 class model(Model):
     def __init__(self):
@@ -29,14 +29,23 @@ class model(Model):
         entities = list(map(from_datastore,query.fetch()))
         return entities
 
+    """
+    Changing these values to my flasks values, so instead of just adding a name, email, and message
+    so instead I have name, genre, performed, witten, date, lyrics, url, but so far I see no difference 
+    with this change
+    """
+
     def insert(self,name,email,message):
         key = self.client.key('Review')
         rev = datastore.Entity(key)
         rev.update( {
             'name': name,
-            'email' : email,
-            'date' : datetime.today(),
-            'message' : message
+            'genre' : email,
+            'performed' : performed,
+            'written' : written,
+            'dates' : date,
+            'lyrics' : lyrics,
+            'url' : url
             })
         self.client.put(rev)
         return True
