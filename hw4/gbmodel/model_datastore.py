@@ -18,7 +18,15 @@ def from_datastore(entity):
         return None
     if isinstance(entity, list):
         entity = entity.pop()
-    return [entity['name'],entity['genre'],entity['performed'],entity['written'], entity['date'], entity['lyrics'], entity['url']]
+
+    return [
+        entity.get('name', ''),
+        entity.get('genre', ''),
+        entity.get('performed', ''),
+        entity.get('written', ''),
+        entity.get('dates', ''),
+        entity.get('lyrics', ''),
+        entity.get('url', '')]
 
 class model(Model):
     def __init__(self):
@@ -35,15 +43,15 @@ class model(Model):
     with this change
     """
 
-    def insert(self,name,email,message):
+    def insert(self,name,genre, performed, written, dates, lyrics ,url):
         key = self.client.key('Review')
         rev = datastore.Entity(key)
         rev.update( {
             'name': name,
-            'genre' : email,
+            'genre' : genre,
             'performed' : performed,
             'written' : written,
-            'dates' : date,
+            'dates' : dates,
             'lyrics' : lyrics,
             'url' : url
             })
