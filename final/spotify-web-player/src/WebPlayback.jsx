@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import stepOne from './StepOne.png';
+import StepTwo from './StepTwo.png';
+
 
 const track = {
     name: "",
@@ -71,6 +74,18 @@ function WebPlayback(props) {
                 <div className="container">
                     <div className="main-wrapper">
                         <b> Instance not active. Transfer your playback using your Spotify app </b>
+                    </div>
+                    <div className='instructions-container'>
+                        <img
+                            alt="Step One of connecting player to application, clicking Connect to Device "
+                            src={stepOne}
+                            className='instructions' 
+                        />
+                        <img
+                            alt="The Spotify Logo"
+                            src={StepTwo}
+                            className='instructions2' 
+                        />
                     </div>
                 </div>
             </>)

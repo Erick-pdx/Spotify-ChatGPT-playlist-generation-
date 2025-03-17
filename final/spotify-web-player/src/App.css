@@ -51,7 +51,6 @@ body {
   bottom: 0;
   background-size: cover;
   background-position: center center;
-  /*filter: blur(8em) opacity(0.6);*/
   position: absolute;
 }
 
@@ -101,6 +100,47 @@ body {
 .App-link {
   color: #61dafb;
 }
+
+.instructions-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center; 
+  align-items: flex-start; 
+  gap: 30px; 
+}
+
+.instructions, .instructions2 {
+  width: 400px;
+  object-fit: cover;
+}
+
+.instructions2 {
+  height: 600px;
+  clip-path: inset(0% 0% 33% 0%);
+}
+
+
+.logo-image {
+  border-radius: 200%;
+  float: left;
+  margin-right: 10px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  clip-path: inset(10% 10% 10% 10%); 
+
+}
+
+.plus-image {
+  border-radius: 35%;
+  float: left;
+  margin-top: 35px;
+  margin-right: 10px;
+  width: 125px;
+  height: 125px;
+  object-fit: cover;
+}
+
 
 @keyframes App-logo-spin {
   from {
