@@ -22,6 +22,10 @@ function WebPlayback(props) {
     const [player, setPlayer] = useState(undefined);
     const [current_track, setTrack] = useState(track);
 
+    const [chatInput, setChatInput] = useState("");
+    const [chatResponse, setChatResponse] = useState("");
+
+
     useEffect(() => {
 
         const script = document.createElement("script");
@@ -68,56 +72,91 @@ function WebPlayback(props) {
         };
     }, []);
 
-    if (!is_active) { 
-        return (
-            <>
-                <div className="container">
-                    <div className="main-wrapper">
-                        <b> Instance not active. Transfer your playback using your Spotify app </b>
-                    </div>
-                    <div className='instructions-container'>
-                        <img
-                            alt="Step One of connecting player to application, clicking Connect to Device "
-                            src={stepOne}
-                            className='instructions' 
-                        />
-                        <img
-                            alt="The Spotify Logo"
-                            src={StepTwo}
-                            className='instructions2' 
-                        />
-                    </div>
-                </div>
-            </>)
-    } else {
-        return (
-            <>
-                <div className="container">
-                    <div className="main-wrapper">
+  const handleChatSubmit = async () => {
+    const apiKey = process.env.REACT_APP_OPENAI_API_KEY; 
+    const apiUrl = "https://api.openai.com/v1/chat/completions";
 
-                        <img src={current_track.album.images[0].url} className="now-playing__cover" alt="" />
-
-                        <div className="now-playing__side">
-                            <div className="now-playing__name">{current_track.name}</div>
-                            <div className="now-playing__artist">{current_track.artists[0].name}</div>
-
-                            <button className="btn-spotify" onClick={() => { player.previousTrack() }} >
-                                &lt;&lt;
-                            </button>
-
-                            <button className="btn-spotify" onClick={() => { player.togglePlay() }} >
-                                { is_paused ? "PLAY" : "PAUSE" }
-                            </button>
-
-                            <button className="btn-spotify" onClick={() => { player.nextTrack() }} >
-                                &gt;&gt;
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
+    if (!apiKey) {
+      console.error("OpenAI API key is missing. Check your .env file.");
+      return;
     }
+
+    const requestBody = {
+      model: "gpt-4",
+      messages: [{ role: "user", content: chatInput }],
+    };
+
+    try {
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await res.json();
+      setChatResponse(data.choices[0].message.content);
+    } catch (error) {
+      console.error("Error fetching ChatGPT response:", error);
+    }
+  };
+
+
+
+
+  if (!is_active) {
+    return (
+      <div className="container">
+        <div className="main-wrapper">
+          <b> Instance not active. Transfer your playback using your Spotify app </b>
+        </div>
+        <div className="instructions-container">
+          <img alt="Step One of connecting player to application, clicking Connect to Device " src={stepOne} className="instructions" />
+          <img alt="The Spotify Logo" src={StepTwo} className="instructions2" />
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="container">
+        <div className="main-wrapper">
+
+          <img src={current_track.album.images[0].url} className="now-playing__cover" alt="" />
+          <div className="now-playing__side">
+            <div className="now-playing__name">{current_track.name}</div>
+            <div className="now-playing__artist">{current_track.artists[0].name}</div>
+            <button className="btn-spotify" onClick={() => player.previousTrack()}>
+              &lt;&lt;
+            </button>
+            <button className="btn-spotify" onClick={() => player.togglePlay()}>
+              {is_paused ? "PLAY" : "PAUSE"}
+            </button>
+            <button className="btn-spotify" onClick={() => player.nextTrack()}>
+              &gt;&gt;
+            </button>
+          </div>
+        </div>
+
+        <h2 className='GPT-title'>Create a Playlist with GPT</h2>        
+        <div className="input-container">
+          <input
+            className='input_GPT'
+            type="text"
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
+            placeholder="Tell GPT what you want in the playlist"
+          />
+          <button className='send-button_GPT' onClick={handleChatSubmit}>Send</button>
+          </div>
+
+        <div className="response-container">
+            <p className='gptResponse'>Response: {chatResponse}</p>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default WebPlayback
+export default WebPlayback;
