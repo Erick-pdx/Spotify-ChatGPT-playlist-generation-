@@ -2,17 +2,19 @@ const express = require('express')
 const request = require('request');
 const dotenv = require('dotenv');
 
-const port = 5000
+//server settings
+const port = 5000;
+global.access_token = '';
+dotenv.config();
 
-global.access_token = ''
-
-dotenv.config()
-
+//The devs api key for spotify 
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
 
+//get spotify api credentials from enviroment varibles 
 var spotify_redirect_uri = 'http://localhost:3000/auth/callback'
 
+//generates a string for the spotify auth
 var generateRandomString = function (length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -23,10 +25,11 @@ var generateRandomString = function (length) {
   return text;
 };
 
+//create the express app
 var app = express();
 
+//login to spotify, and get access to email, private data, and playlist permissions
 app.get('/auth/login', (req, res) => {
-
   var scope = "streaming user-read-email user-read-private playlist-modify-private playlist-modify-public";  
   var state = generateRandomString(16);
 
@@ -41,10 +44,9 @@ app.get('/auth/login', (req, res) => {
   res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
 })
 
+//extracts the authorization and sends a post to get the access token
 app.get('/auth/callback', (req, res) => {
-
   var code = req.query.code;
-
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     form: {
@@ -68,10 +70,12 @@ app.get('/auth/callback', (req, res) => {
 
 })
 
+  //give the frontend the access token
 app.get('/auth/token', (req, res) => {
   res.json({ access_token: access_token})
 })
 
+//start the server
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`)
 })

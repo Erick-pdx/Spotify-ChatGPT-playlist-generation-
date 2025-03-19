@@ -3,6 +3,8 @@ import spotifyLogo from './spotify_logo.png';
 import openAILogo from './ChatGPT_logo.png';
 import plus from './plus_symbol.png';
 
+
+{/*Landing/login page with description of program and images*/}
 function Login() {
     return (
         <div className="App">

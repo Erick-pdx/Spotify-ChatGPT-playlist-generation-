@@ -99,7 +99,9 @@ function WebPlayback(props) {
         - Only return the list, without extra explanations.
         -Dont say anything beside song names as this will be used for the making of the playlist
         -Again unless its the name and artist of the song dont put anything else
-        -Don't say anything to end the response just the songs needs to be in the response`;   
+        -Don't say anything to end the response just the songs needs to be in the response
+        -If making a playlist about one artist put by the artist after every song
+        -Have to put by and than the artist`;   
 
         //the model it will use
         const requestBody = {
