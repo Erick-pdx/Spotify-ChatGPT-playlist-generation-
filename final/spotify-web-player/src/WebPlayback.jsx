@@ -237,11 +237,59 @@ function WebPlayback(props) {
       
           console.log("Songs added to playlist successfully!");
       
+          //sending the playlistid to start playing it
+          startPlayback(playlistId);
+
         } catch (error) {
           console.error("Error creating Spotify playlist:", error);
         }
       };
             
+
+      //start playing the new playlist 
+      const startPlayback = async (playlistId) => {
+        const token = props.token;
+        if (!token) {
+            console.error("Spotify token is missing.");
+            return;
+        }
+    
+        try {
+            // Get the active device ID
+            const playerState = await player.getCurrentState();
+            if (!playerState) {
+                console.error("No active Spotify player found. Please start playback manually.");
+                return;
+            }
+    
+            const deviceId = playerState.device_id;
+            console.log("Playing on Device ID:", deviceId);
+    
+            // Play the newly created playlist
+            const playResponse = await fetch("https://api.spotify.com/v1/me/player/play", {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    context_uri: `spotify:playlist:${playlistId}`,
+                    device_id: deviceId
+                }),
+            });
+    
+            if (!playResponse.ok) {
+                console.error("Failed to start playback:", await playResponse.json());
+                return;
+            }
+    
+            console.log("Playback started!");
+        } catch (error) {
+            console.error("Error starting playback:", error);
+        }
+    };
+    
+
 
 
   if (!is_active) {
