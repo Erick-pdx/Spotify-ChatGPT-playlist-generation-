@@ -3,7 +3,6 @@ const request = require('request');
 const dotenv = require('dotenv');
 
 //server settings
-const port = 5000;
 global.access_token = '';
 dotenv.config();
 
@@ -13,6 +12,10 @@ var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
 
 //get spotify api credentials from enviroment varibles 
 var spotify_redirect_uri = process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:3000/auth/callback';
+
+console.log("SPOTIFY_CLIENT_ID:", process.env.SPOTIFY_CLIENT_ID);
+console.log("SPOTIFY_CLIENT_SECRET:", process.env.SPOTIFY_CLIENT_SECRET);
+console.log("SPOTIFY_REDIRECT_URI:", process.env.SPOTIFY_REDIRECT_URI);
 
 //generates a string for the spotify auth
 var generateRandomString = function (length) {
@@ -30,6 +33,7 @@ var app = express();
 
 //login to spotify, and get access to email, private data, and playlist permissions
 app.get('/auth/login', (req, res) => {
+  console.log("Received /auth/login request");
   var scope = "streaming user-read-email user-read-private playlist-modify-private playlist-modify-public";  
   var state = generateRandomString(16);
 
@@ -75,7 +79,17 @@ app.get('/auth/token', (req, res) => {
   res.json({ access_token: access_token})
 })
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../build')));
+
+// Catch-all handler: for any request that doesn't match an API route, send back index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+const port = process.env.PORT || 5000;
+
 //start the server
 app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})
+  console.log(`Server started and listening on port ${port}`);
+});

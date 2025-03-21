@@ -11,8 +11,8 @@ function Login() {
             <header className="App-header">
             <h2>Generate AI-Powered Playlists with Spotify & ChatGPT</h2>
                 <p>Login with your Spotify account to create custom playlists based on your favorite songs or moods!</p>
-                <a className="btn-spotify" href="/auth/login" >
-                    Login with Spotify 
+                <a className="btn-spotify" href="https://final-594659887782.us-west1.run.app/auth/login" >
+                    Login with Spotify please
                 </a>
                 <section>
                     <img
