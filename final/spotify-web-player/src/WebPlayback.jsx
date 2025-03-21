@@ -78,14 +78,15 @@ function WebPlayback(props) {
 
     //main chat handler for connecting and POST
     const handleChatSubmit = async () => {
-        const apiKey = process.env.REACT_APP_OPENAI_API_KEY; 
-        const apiUrl = "https://api.openai.com/v1/chat/completions";
+      const apiKey = (window._env_ && window._env_.OPENAI_API_KEY) || process.env.REACT_APP_OPENAI_API_KEY;
+      const apiUrl = "https://api.openai.com/v1/chat/completions";
 
         if (!chatInput.trim()) return; // Prevent empty requests
 
         //make sure that api key is being used
         if (!apiKey) {
             console.error("OpenAI API key is missing. Check your .env file.");
+            console.log('OpenAI API key:', apiKey);
         return;
         }
 

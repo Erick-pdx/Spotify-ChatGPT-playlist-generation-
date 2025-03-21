@@ -22,6 +22,13 @@ RUN npm run build
 ENV PORT=8080
 EXPOSE 8080
 
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Set the entrypoint so our runtime config is injected before starting the server
+ENTRYPOINT ["/app/entrypoint.sh"]
+
 # Start the Express server
 CMD ["node", "server/index.js"]
 
