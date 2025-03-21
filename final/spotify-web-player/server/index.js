@@ -13,10 +13,6 @@ var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET
 //get spotify api credentials from enviroment varibles 
 var spotify_redirect_uri = process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:3000/auth/callback';
 
-console.log("SPOTIFY_CLIENT_ID:", process.env.SPOTIFY_CLIENT_ID);
-console.log("SPOTIFY_CLIENT_SECRET:", process.env.SPOTIFY_CLIENT_SECRET);
-console.log("SPOTIFY_REDIRECT_URI:", process.env.SPOTIFY_REDIRECT_URI);
-
 //generates a string for the spotify auth
 var generateRandomString = function (length) {
   var text = '';

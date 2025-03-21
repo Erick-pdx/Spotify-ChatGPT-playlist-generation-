@@ -86,7 +86,6 @@ function WebPlayback(props) {
         //make sure that api key is being used
         if (!apiKey) {
             console.error("OpenAI API key is missing. Check your .env file.");
-            console.log('OpenAI API key:', apiKey);
         return;
         }
 
